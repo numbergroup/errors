@@ -1,8 +1,10 @@
+//go:build go1.13
 // +build go1.13
 
 package errors
 
 import (
+	"errors"
 	stderrors "errors"
 	"fmt"
 	"reflect"
@@ -170,7 +172,7 @@ func TestUnwrap(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := Unwrap(tt.args.err); !reflect.DeepEqual(err, tt.want) {
+			if err := Unwrap(tt.args.err); !errors.Is(err, tt.want) {
 				t.Errorf("Unwrap() error = %v, want %v", err, tt.want)
 			}
 		})

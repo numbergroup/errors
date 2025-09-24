@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"reflect"
 	"testing"
 )
 
@@ -100,7 +99,7 @@ func TestCause(t *testing.T) {
 
 	for i, tt := range tests {
 		got := Cause(tt.err)
-		if !reflect.DeepEqual(got, tt.want) {
+		if !errors.Is(got, tt.want) {
 			t.Errorf("test %d: got %#v, want %#v", i+1, got, tt.want)
 		}
 	}
@@ -125,7 +124,7 @@ func TestWrapf(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		got := Wrapf(tt.err, tt.message).Error()
+		got := Wrap(tt.err, tt.message).Error()
 		if got != tt.want {
 			t.Errorf("Wrapf(%v, %q): got: %v, want %v", tt.err, tt.message, got, tt.want)
 		}
@@ -217,7 +216,7 @@ func TestWithMessagef(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		got := WithMessagef(tt.err, tt.message).Error()
+		got := WithMessage(tt.err, tt.message).Error()
 		if got != tt.want {
 			t.Errorf("WithMessage(%v, %q): got: %q, want %q", tt.err, tt.message, got, tt.want)
 		}
